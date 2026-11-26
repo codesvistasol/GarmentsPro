@@ -1,0 +1,1 @@
+ALTER TABLE "SalesItem" ADD COLUMN "unitCost" DECIMAL(12,2);

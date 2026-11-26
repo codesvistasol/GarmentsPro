@@ -1,0 +1,14 @@
+ALTER TABLE "StaffUser" ADD COLUMN "branchOnly" BOOLEAN NOT NULL DEFAULT false;
+CREATE TABLE "Shop" ("id" TEXT PRIMARY KEY, "name" TEXT NOT NULL UNIQUE);
+CREATE TABLE "Branch" (
+  "id" TEXT PRIMARY KEY, "shopId" TEXT NOT NULL REFERENCES "Shop"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+  "name" TEXT NOT NULL, "schemaName" TEXT NOT NULL UNIQUE, "ready" BOOLEAN NOT NULL DEFAULT false,
+  UNIQUE ("shopId", "name")
+);
+CREATE TABLE "BranchAccess" (
+  "branchId" TEXT NOT NULL REFERENCES "Branch"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+  "userId" TEXT NOT NULL REFERENCES "StaffUser"("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+  "permissions" TEXT[] NOT NULL, "manager" BOOLEAN NOT NULL DEFAULT false,
+  PRIMARY KEY ("branchId", "userId")
+);
+CREATE INDEX "BranchAccess_userId_idx" ON "BranchAccess"("userId");
